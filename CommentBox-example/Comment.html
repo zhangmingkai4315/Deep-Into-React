@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.min.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/marked/marked.min.js"></script>
+    <title>CommentBox</title>
+    <script>
+        function dataToString(d){
+            return [d.getFullYear(), d.getMonth()+1, d.getDate()].join('-');
+        }
+        var data=[{
+            name:"Petrt",
+            comment:"hello **world**"
+        },{
+            name:"Hunter",
+            comment:"###Hi i am Hunter"
+        }];
+    </script>
+</head>
+<body>
+<div id="content"></div>
+
+<div id="content1"></div>
+<script type="text/jsx">
+    var CommentBox = React.createClass({
+        getInitialState: function() {
+            return {data: []};
+        },
+        getDataFromServer:function(){
+            $.ajax({
+                url:this.props.url,
+                dataType:'json',
+                cache:false,
+                success:function(data){
+                    this.setState({data:data});
+                }.bind(this),
+                error:function(xhr, status, err){
+                    console.error(this.props.url,err.toString());
+                }.bind(this)
+            });
+        },
+
+        handleCommentSubmit: function(comment) {
+            var comments = this.state.data;
+            var newComments = comments.concat([comment]);
+            this.setState({data: newComments});
+            $.ajax({
+                url: this.props.url,
+                dataType: 'json',
+                type: 'POST',
+                data: comment,
+                success: function(data) {
+                    this.setState({data: data});
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    console.error(this.props.url, status, err.toString());
+                }.bind(this)
+            });
+        },
+
+        componentDidMount:function(){
+            this.getDataFromServer();
+            setInterval(this.getDataFromServer,this.props.pollInterval);
+            console.log(this.props.pollInterval);
+//            setTimeout(this.getDataFromServer,1000);
+        },
+        render: function() {
+            return (
+                    //混合使用时
+                    <div className="commentBox">
+                    <h2>Hello, world! I am a CommentBox.</h2>
+                            <CommentList data={this.state.data}/>
+                            <CommentForm  onCommentSubmit={this.handleCommentSubmit}/>
+                    </div>
+            );
+        }
+    });
+
+    var CommentList=React.createClass({
+        render:function(){
+            var comments=this.props.data.map(function(comment){
+                return(
+                        <Comment author={comment.name}>
+                        {comment.comment}
+                        </Comment>
+                )
+            })
+            return (
+                    <div className="commentList">
+                    {comments}
+                    </div>
+            );
+        }
+    });
+
+    var CommentForm=React.createClass({
+        handleSubmit: function(e) {
+                    e.preventDefault();
+                    var name = React.findDOMNode(this.refs.name).value.trim();
+                    var comment = React.findDOMNode(this.refs.comment).value.trim();
+                    if (!name || !comment) {
+                        return;
+                    }
+                    // TODO: send request to the server
+
+                    this.props.onCommentSubmit({name: name, comment: comment});
+                    //当发送完成后确认后清除原来内容
+                    React.findDOMNode(this.refs.name).value = '';
+                    React.findDOMNode(this.refs.comment).value = '';
+                    return;
+        },
+        render:function(){
+            return(
+                    <form className="commentForm" onSubmit={this.handleSubmit}>
+                    <label>评论区域</label>
+                    <input type="text" placeholder="Your comment input here!" name="comment" ref="comment"/><br/>
+                    <input type="text" placeholder="Your name required" name="name" ref="name"/>
+                    <button type="submit" value="Post">提交按钮</button>
+                    </form>
+                );
+        }
+    });
+
+    var Comment= React.createClass({
+
+        render: function() {
+            var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+            return (
+                    <div className="comment">
+                        <h2 className="commentAuthor">
+                            {this.props.author}
+                        </h2>
+                        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+                    </div>
+            );
+        }
+    });
+
+    //自定义的标签请使用大写首字母标示
+    //render将返回一个树形结构最终生成到HTML,由于输入的内容并不直接产生HTML字符串，所以xss不存在
+//    <!--React.render(-->
+//            <!--<CommentBox data={data} />,-->
+//            <!--document.getElementById('content')-->
+//    <!--);-->
+    React.render(
+            <CommentBox url="../data/1.json" pollInterval={2000} />,
+            document.getElementById('content1')
+    )
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
