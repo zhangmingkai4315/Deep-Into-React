@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/marked/marked.min.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<div id="content1"></div>
+<div id="content2"></div>
+<script type="text/jsx">
+
+//1
+   var ComponentWithDefaultProps=React.createClass({
+     //设置缺省值
+     getDefaultProps:function () {
+       return{
+         value:'default value'
+       };
+     },
+    render:function () {
+       return(<div>{this.props.value}</div>);
+    }
+
+   });
+   React.render(<ComponentWithDefaultProps value="hello"/>,document.getElementById("content"));
+//2
+    //...this.props将所有的属性直接复制调用的地方  this.props.children 获得所有子节点的内容
+   var CheckLink=React.createClass({
+     render:function () {
+       return (<a {...this.props}>{'√'}{this.props.children}</a>)
+     }
+   });
+
+   React.render(<CheckLink href="/check.html">CheckMe</CheckLink>,document.getElementById("content1"));
+//3
+
+   var SingleChildCompent=React.createClass({
+     propTypes:function () {
+       children:React.propTypes.element.isRequired
+     },
+     render:function () {
+       return(<div>
+            {this.props.children}
+         </div>);
+     }
+   });
+
+   React.render(<SingleChildCompent><p>Hellp</p><span>world</span></SingleChildCompent>,document.getElementById("content2"));
+
+</script>
+
+</body>
+</html>

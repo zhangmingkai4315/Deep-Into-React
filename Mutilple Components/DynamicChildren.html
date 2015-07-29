@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/marked/marked.min.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script type="text/jsx">
+   var listData=[{
+     id:"1",
+     text:"hello"
+   },{
+     id:"2",
+     text:"world"
+   }];
+   var ListItemWrapper=React.createClass({
+      render:function () {
+        return(<li>{this.props.data.text}</li>)
+      }
+   });
+
+
+   var List=React.createClass({
+      render:function () {
+        var list=this.props.listData;
+        return(
+        <ul>{
+          this.props.listData.map(function (data) {
+               return <ListItemWrapper data={data}/>
+          })
+        }</ul>
+        )
+      }
+   });
+
+   React.render(<List listData={listData}/>,document.getElementById("content"));
+</script>
+
+</body>
+</html>

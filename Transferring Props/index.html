@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/marked/marked.min.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script type="text/jsx">
+   var FancyCheck=React.createClass({
+     render:function () {
+       //需要编译成ES5才能
+        var {checked,title,...other}=this.props;
+        var className=check?"Checked":"UnChecked";
+        var fancyTitle=check?"X"+title:"o"+title;
+        return (
+           <laber>
+            <input {...other}
+            checked={checked}
+            className={className}
+            type="checkbox" />{fancyTitle}
+           </laber>
+        );
+     }
+   });
+
+   React.render(<FancyCheck checked={true} title="this is a ... test" clickAction={console.log.bind(console)}>Hello World!</FancyCheck>
+   ,document.getElementById("content");
+ )
+</script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.min.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/marked/marked.min.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script type="text/jsx">
+  export class Counter extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state={count:props.initialCount};
+    }
+    tick() {
+      this.setState({count:this.state.count+1});
+    }
+    render(){
+      return(
+        <div onClick={this.tick.bind(this)}>
+          Clicks:{this.state.count}
+        </div>
+      );
+    }
+  }
+
+  Counter.propTypes={initialCount:React.PropTypes.number};
+  Counter.defaultProps={initialCount:0};
+
+
+</script>
+
+</body>
+</html>

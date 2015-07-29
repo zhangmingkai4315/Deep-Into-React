@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.min.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/marked/marked.min.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script type="text/jsx">
+    // var TickTock=React.createClass({
+    //   getInitialState:function () {
+    //     return {seconds:0};
+    //   },
+    //   tick:function () {
+    //     this.setState({seconds:this.state.seconds+1});
+    //   },
+    //   render:function () {
+    //     return(<div>
+    //       This component has run for:{this.state.seconds}
+    //     </div>);
+    //   },
+    //   componentDidMount:function () {
+    //     setInterval(this.tick,1000);
+    //   }
+    // });
+    var SetIntervalMixin={
+      componentDidMount:function () {
+        this.intervals=[]
+      },
+      setInterval:function () {
+        this.intervals.push(setInterval.apply(null,arguments));
+      },
+      componentWillUnmount:function () {
+        this.intervals.map(clearInterval);
+      }
+    };
+
+    var TickTock=React.createClass({
+      mixins:[SetIntervalMixin],
+      getInitialState:function () {
+        return {seconds:0};
+      },
+      tick:function () {
+        this.setState({seconds:this.state.seconds+1});
+      },
+      render:function () {
+        return(<div>
+          This component has run for:{this.state.seconds}
+        </div>);
+      },
+      componentDidMount:function () {
+        this.setInterval(this.tick,1000);
+      }
+   });
+
+
+
+
+
+    React.render(<TickTock/>,document.getElementById("content"));
+</script>
+
+</body>
+</html>
