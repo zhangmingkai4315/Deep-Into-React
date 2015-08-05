@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../../node_modules/react/dist/react.js"></script>
+    <script src="../../node_modules/react/dist/JSXTransformer.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script type="text/jsx">
+    var CheckedComponent=React.createClass({
+      getInitialState:function () {
+        return {checkStatus:true};
+      },
+      handleCheckedBox:function(){
+        this.setState({checkStatus:!this.state.checkStatus});
+      },
+      render:function () {
+        var msg="";
+        if(this.state.checkStatus){
+          msg="The button has been checked";
+        }else{
+          msg="This button has been UnChecked";
+        }
+        return (<div>
+          <input type="checkbox" onClick={this.handleCheckedBox} name="name"
+          defaultChecked={this.state.checkStatus}/>
+          <div>
+            <span>{msg}</span>
+          </div>
+          </div>);
+      }
+    });
+    React.render(<CheckedComponent/>
+      ,document.getElementById("content"));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../../node_modules/react/dist/react.js"></script>
+    <script src="../../node_modules/react/dist/JSXTransformer.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<script type="text/jsx">
+    var MyComponent=React.createClass({
+      render:function () {
+        return (<div>
+          <h1>
+          {this.props.text}
+          </h1>
+          <p>{this.props.children}</p>
+          </div>);
+      }
+    });
+    React.render(<div><MyComponent text="Name">Mike</MyComponent>
+    <MyComponent text="Address">Beijing</MyComponent>
+    <MyComponent text="Age">23</MyComponent></div>
+
+      ,document.getElementById("content"));
+</script>
+
+</body>
+</html>
