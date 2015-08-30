@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Life Cycle For React</title>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/react.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+
+    <script type="text/jsx">
+      var SurveryEditor=React.createClass({
+         getInitialState:function () {
+           return{
+             dropZoneEnter:false,
+             title:"",
+             introduction:"",
+             questions:[]
+           }
+         },
+         handleFormChange:function (formData) {
+           this.setState(formData);
+         },
+         handleDragOver:function (ev) {
+           ev.preventDefault();
+         },
+         handleDragEnter:function () {
+           this.setState({dropZoneEnter:true});
+         },
+         handleDragLeave:function () {
+           this.setState({dropZoneEnter:false});
+         },
+         handleDrop:function (ev) {
+           var questionType=ev.dataTransfer.getData("questionType");
+           var questions=this.state.questions;
+           questions=questions.concat({type:questionType});
+           this.setState({
+             questions:questions,
+             dropZoneEnter:false
+           });
+         },
+        render:function () {
+          var questions=this.state.questions;
+          var dropZoneEnter='';
+          if(this.state.dropZoneEnter){
+            dropZoneEnter='drap-enter';
+          }
+
+          return(<div className="survey-editor">
+                    <div className="row">
+                        <aside className="sidebar col-md-3">
+                            <h2>Module</h2>
+                            <DraggableQuestions/>
+                        </aside>
+                          <div className="survey-canvas col-md-9">
+                              <SurveyForm title={this.state.title} introduction={this.state.introduction} onChange={this.handleFormChange}/>
+                              <Divider>Questions</Divider>
+                              <ReactCSSTransitionGroup transitionName='question'>
+                                  {questions}
+                              </ReactCSSTransitionGroup>
+                              <div className={'drag-zone well well-drop-zone '+dropZoneEnter}
+                                       onDragOver={this.handleDragOver}
+                                       onDragEnter={this.handleDragEnter}
+                                       onDragLeave={this.handleDragLeave}
+                                       onDrag={this.handleDrop}
+                                  >Drag and drop a module from the left
+                              </div>
+                              <div className="actions">
+                              <button className='btn btn-save' onClick={this.handleSaveClicked}>Save</button>
+                              </div>
+                        </div>
+                    </div>
+                  </div>
+                );
+        }
+      });
+      var DraggableQuestions=React.createClass({
+        render:function () {
+          return(<div></div>);
+        }
+      })
+      React.render(<SurveryEditor/>,document.getElementById("Container"));
+    </script>
+
+  </head>
+  <body>
+    <div id="Container"></div>
+  </body>
+</html>

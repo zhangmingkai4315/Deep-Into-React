@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Life Cycle For React</title>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/react.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+    <script type="text/jsx">
+    var MyComponent=React.createClass({
+      getDefaultProps:function () {
+        return {
+          date:new Date()
+        }
+      },
+      getInitialState:function () {
+        return{
+          day:this.props.date.getDay()  //anti-patten 直接将值从props中取出后计算后显示即可，不需要将其传递给state
+        }
+      },
+      render:function () {
+        console.log(this.props.date);
+        return(
+          <div>Day:{this.props.date.getDay()}</div>);
+      }
+    });
+
+    React.render(<MyComponent/>,document.getElementById('Container'));
+    </script>
+
+  </head>
+  <body>
+    <div id="Container"></div>
+  </body>
+</html>
