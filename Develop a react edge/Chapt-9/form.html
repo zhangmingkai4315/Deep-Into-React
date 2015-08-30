@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Life Cycle For React</title>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/react.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+    <script type="text/jsx">
+    // var availableTags =
+   var MyForm=React.createClass({
+         submitHandler:function () {
+           alert(this.refs.helloForm.value);
+         },
+         render:function () {
+           return(<form onSubmit={this.submitHandler}>
+                    <input ref="helloForm" type="text" defaultValue="hello world"/>
+                    <br/>
+                    <button className="btn btn-success" type="submit">Speak</button>
+                  </form>)
+         }
+      });
+      React.render(<MyForm/>,document.getElementById("Container"));
+
+    </script>
+    <script type="text/jsx">
+    // var availableTags =
+   var MyForm2=React.createClass({
+         getInitialState:function () {
+           return{
+             helloto:"hello world"
+           }
+         },
+         handleChange:function (ev) {
+           this.setState({helloto:ev.target.value.toLowerCase()});
+         },
+         submitHandler:function (event) {
+           event.preventDefault();
+           alert(this.refs.helloForm.value);
+         },
+         render:function () {
+           return(<form onSubmit={this.submitHandler}>
+                    <input ref="helloForm" type="text" value={this.state.helloto} onChange={this.handleChange}/>
+                    <br/>
+                    <button className="btn btn-success" type="submit">Speak</button>
+                  </form>)
+         }
+      });
+      React.render(<MyForm2/>,document.getElementById("Container2"));
+
+    </script>
+
+    <script type="text/jsx">
+    // var availableTags =
+   var MyForm3=React.createClass({
+         getDefaultProps:function () {
+           return{
+              textarea:"Hello world"
+           }
+         },
+         getInitialState:function () {
+           return{
+             options:["B"]
+           }
+         },
+         handleChange:function (event) {
+           event.preventDefault();
+           var checked=[];
+           var sel=event.target;
+           for(var i=0;i<sel.length;i++){
+             var option=sel.options[i];
+             if(option.selected){
+               checked.push(option.value);
+             }
+           }
+           this.setState({options:checked});
+         },
+         handleSubmit:function (event) {
+           event.preventDefault();
+           alert(this.state.options);
+         },
+         render:function () {
+            return( <form onSubmit={this.handleSubmit}><textarea defaultValue={this.props.textarea}></textarea>
+                     <select multiple="true" defaultValue={this.state.options} onChange={this.handleChange}>
+                      <option value="A">SELECT A</option>
+                      <option value="B">SELECT B</option>
+                      <option value="C">SELECT C</option>
+                     </select>
+                   <button type="submit">Submit</button>
+                   </form>)
+         }
+      });
+      React.render(<MyForm3/>,document.getElementById("Container3"));
+
+    </script>
+
+
+
+    <script type="text/jsx">
+    // var availableTags =
+   var MyForm4=React.createClass({
+         getInitialState:function () {
+           return{
+             family_name:"Zhang",
+             given_name:"Mike"
+           }
+         },
+         submitHandler:function () {
+           var showWelcome="Hi ,"+this.state.given_name+" "+this.state.family_name;
+           alert(showWelcome);
+         },
+         handleChange:function () {
+           var newState={};
+           newState[event.target.name]=event.target.value;
+           this.setState({newState});
+         },
+         render:function () {
+            return(<form onSubmit={this.submitHandler}>
+                     <label htmlFor="given_name">Given Name:</label>
+                     <br/>
+                     <input name="given_name" type="text" value={this.state.given_name} onChange={this.handleChange}/>
+                     <br/>
+                      <label htmlFor="family_name">Family Name:</label>
+                      <br/>
+                      <input name="family_name" type="text" value={this.state.family_name} onChange={this.handleChange}/>
+                      <button className="btn btn-success" type="submit">Show Name</button>
+                  </form>)
+         }
+      });
+      React.render(<MyForm4/>,document.getElementById("Container4"));
+
+    </script>
+
+  </head>
+  <body>
+    <div id="Container"></div>
+    <div id="Container2"></div>
+    <div id="Container3"></div>
+    <div id="Container4"></div>
+  </body>
+</html>

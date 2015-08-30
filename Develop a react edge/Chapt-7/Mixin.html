@@ -11,98 +11,35 @@
     <script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
 
     <script type="text/jsx">
-    var uniqueNumber=0;
-    var uniqueId=function (name) {
-      uniqueNumber=uniqueNumber+1;
-      // debugger;
-      return name+uniqueNumber;
-    };
-    var arrayOfChoices=[
-      "hello","thanks","welcome"
-    ];
-     var AnswerMultipleChoiceQuestion=React.createClass({
-       propTypes:{
-         value:React.PropTypes.string,
-         choices:React.PropTypes.array.isRequired,
-        //  onCompleted:React.PropTypes.func.isRequired
-       },
-       getInitialState:function () {
-         return{
-           id:uniqueId('multiple-choice-'),
-           value:this.props.value
-         };
-
-       },
-       onCompleted:function () {
-
-       },
-       renderChoice:function () {
-          debugger;
-         return this.props.choices.map(function(choice,i){
-           return AnswerRadioInput({
-             id:"choice-"+i,
-             name:choice,
-             label:i,
-             value:i,
-             checked:this.state.value===choice
-           });
-         }).bind(this);
-       },
-       render:function () {
-         return (<div className="form-group">
-                      <label className="survey-item-label" htmlFor={this.state.id}>
-                        {this.props.lable}
-                      </label>
-                     <div className="survey-item-content">
-                        {this.renderChoice()}
-                     </div>
-                 </div>
-               )
-       }
-     });
-
-
-
-
-
-
-
-
-      var AnswerRadioInput=React.createClass({
-        getDefaultProps:function () {
-          return {
-            id:null,
-            checked:false
-          };
-        },
-        propTypes:{
-          id:React.PropTypes.string,
-          name:React.PropTypes.string.isRequired,
-          label:React.PropTypes.string.isRequired,
-          value:React.PropTypes.string.isRequired,
-          checked:React.PropTypes.bool
-        },
-        uniqueId:function (prename) {
-
-          return prename+this.state.uniqueNumber;
-        },
-
-        getInitialState:function () {
-          var id=this.props.id?this.props.id:this.uniqueId('radio-');
-          var uniqueNumber=0;
+        var IntervalMixin=function (interval) {
           return{
-            id:id,
-            checked:!!this.props.checked,
-            uniqueNumber:uniqueNumber,
-            name:id
+            componentDidMount:function () {
+              this._interval=setInterval(this.onTick,interval);
+            },
+            componentWillMount:function () {
+              clearInterval(this._interval);
+            }
           };
-        },
-        render:function () {
-          return(<div className="radio"><label htmlFor={this.props.id}><input type="radio" name={this.props.name} value={this.props.value} checked={this.props.checked}/>{this.props.label}</label></div>)
-        }
-      });
-
-      React.render(<AnswerMultipleChoiceQuestion choices={arrayOfChoices} onCompleted={this.onCompleted} id="testId" name="testName" label="Hello world"/>,document.getElementById("Container"));
+        };
+        var Timer=React.createClass({
+          mixins:[IntervalMixin(1000)],
+          getInitialState:function () {
+            return{
+              secondElapsed:0
+            }
+          },
+          onTick:function () {
+            this.setState({secondElapsed:this.state.secondElapsed+1});
+          },
+          render:function () {
+            return(
+            <div>Seconds Elapsed:{this.state.secondElapsed}</div>
+            )
+          }
+        });
+        React.render(
+          <Timer/>,document.getElementById("Container")
+        );
     </script>
 
   </head>

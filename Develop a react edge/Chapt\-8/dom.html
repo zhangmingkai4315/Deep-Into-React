@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Life Cycle For React</title>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/react.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+    <script type="text/jsx">
+    // var availableTags =
+   var RichInput=React.createClass({
+     getDefaultProps:function () {
+       return{
+         data:[
+          "ActionScript",
+          "AppleScript",
+          "Asp",
+          "BASIC",
+          "C",
+          "C++",
+          "Clojure",
+          "COBOL",
+          "ColdFusion",
+          "Erlang",
+          "Fortran",
+          "Groovy",
+          "Haskell",
+          "Java",
+          "JavaScript",
+          "Lisp",
+          "Perl",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Scala",
+          "Scheme"
+        ]
+      };
+     },
+     componentDidMount:function () {
+       var inputDom=$('#tags');
+       debugger;
+       inputDom.autocomplete({
+         source:this.props.data
+       }).bind(this);
+     },
+     render:function () {
+       return (<div className="ui-widget">
+                 <input id="tags" ref="richInput" type="text"/>
+               </div>)
+     }
+   });
+
+
+      var RichText=React.createClass({
+        componentDidMount:function () {
+          var canvas=this.refs.mainCanvas;
+          var cans = canvas.getContext('2d');
+          cans.fillStyle = 'yellow';
+          cans.fillRect(30,30,340,240);
+        },
+        render:function () {
+          return (<div>
+                    <canvas id="canvas" width="300" height="300" ref="mainCanvas"></canvas>
+            </div>)
+        }
+      });
+
+      React.render(<RichText/>,document.getElementById("Container"));
+      React.render(<RichInput/>,document.getElementById("Container1"));
+    </script>
+
+  </head>
+  <body>
+    <div id="Container"></div>
+    <div id="Container1"></div>
+  </body>
+</html>
