@@ -1,0 +1,31 @@
+{
+  "name": "chapt-14",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify --debug index.js > bundle.js",
+    "watch":"watchify --debug index.js -o bundle.js",
+    "build-dist": "NODE_ENV=production browserify index.js|uglifyjs -m > bundle.min.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "react": "^0.13.3",
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.4.24",
+    "watchify": "^3.3.1"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "harmony": true
+        }
+      ]
+    ]
+  }
+}
