@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+</head>
+<body>
+<div id="content"></div>
+
+<script type="text/jsx">
+   /** @jsx React.DOM */
+   var MessageBox=React.createClass({
+
+     getInitialState:function () {
+       return {
+         isVisible:true,
+         titleMessage:"My name is title!",
+         messages:[
+           "this is first message",
+           "this is seconde message",
+           "this is third message"
+         ]
+       }
+     },
+     render:function () {
+       var inlineStyle={
+         display:this.state.isVisible ? "block" : "none"
+       };
+       var messagesForBox=this.state.messages.map(function (message) {
+         return <div><SubMessage title={message}/></div>
+       });
+       return (
+         <div className="container" style={inlineStyle}>
+          <h1> Hello world! {this.state.titleMessage}</h1>
+          {messagesForBox}
+         </div>
+       )
+     }
+   });
+   var titleForSubMessage="Yo SubMessage";
+   var SubMessage=React.createClass({
+     propTypes:function () {
+      title:React.PropTypes.string.isRequired
+     },
+     getDefaultProps:function () {
+       return {
+         title:"Message Default"
+      }
+     },
+     render:function () {
+       return (<small>{this.props.title}</small>);
+     }
+   });
+   React.render(<MessageBox title="Good to see you"/>,document.getElementById("content"));
+
+
+
+
+</script>
+
+</body>
+</html>
