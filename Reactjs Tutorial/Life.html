@@ -1,0 +1,52 @@
+<!---->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react-with-addons.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<div id="content1"></div>
+
+<script type="text/jsx">
+   /** @jsx React.DOM */
+   var DashBoard=React.createClass({
+       loadData:function () {
+        //  $.ajax("url");
+       },
+       getInitialState:function () {
+         return {
+           message:"No input"
+         };
+       },
+       componentWillMount:function () {
+         debugger;
+       },
+       componentDidMount:function () {
+        //  debugger;
+        // loadData.then(function (message) {
+        //   this.setState({message:message});
+        // }.bind(this));
+       },
+       componentWillReceiveProps:function (nextProps) {
+         debugger;   //return when component receive new props
+       },
+       shouldComponentUpdate:function () {
+         //  return boolean  if true -> update else ->do nothing!
+       },
+       render:function () {
+         var message=this.state.message;
+         return (<h1>{message}</h1>)
+     }
+   });
+
+
+
+   React.render(<DashBoard/>,document.getElementById("content"));
+
+</script>
+
+</body>
+</html>

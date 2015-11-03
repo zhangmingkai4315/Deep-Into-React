@@ -32,13 +32,18 @@
        });
        console.log(e.target);
      },
+     deleteItem:function (e) {
+       console.log(e.target);  //handle delete behavier  lodash.js
+      //  this.setState('')    //rerender 
+
+     },
      render:function () {
        var inlineStyle={
          display:this.state.isVisible ? "block" : "none"
        };
        var messagesForBox=this.state.messages.map(function (message) {
-         return <div><SubMessage title={message}/></div>
-       });
+         return <div><SubMessage title={message} onDelete={this.deleteItem}/></div>
+       }.bind(this));
        return (
          <div className="container" style={inlineStyle}>
           <h1> Hello world! {this.state.titleMessage}</h1>
@@ -51,6 +56,9 @@
    });
    var titleForSubMessage="Yo SubMessage";
    var SubMessage=React.createClass({
+     handleSingleButton:function (e) {
+        this.props.onDelete(e);
+     },
      propTypes:function () {
       title:React.PropTypes.string.isRequired
      },
@@ -60,7 +68,10 @@
       }
      },
      render:function () {
-       return (<small>{this.props.title}</small>);
+       return (<div>
+         <small>{this.props.title}</small>
+         <button onClick={this.handleSingleButton}>删除</button></div>
+       );
      }
    });
    React.render(<MessageBox title="Good to see you"/>,document.getElementById("content"));

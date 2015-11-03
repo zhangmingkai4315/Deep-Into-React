@@ -1,0 +1,56 @@
+<!---->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react-with-addons.js"></script>
+    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+</head>
+<body>
+<div id="content"></div>
+<div id="content1"></div>
+
+<script type="text/jsx">
+   /** @jsx React.DOM */
+   var Nolink=React.createClass({
+       getInitialState:function () {
+         return {
+           message:"No input"
+         };
+       },
+       handleChange:function (event) {
+          this.setState({message:event.target.value});
+       },
+       render:function () {
+         var message=this.state.message;
+         return (<div>
+           <input type="text" ref="message" onChange={this.handleChange} name="name" value={message}/>
+           {message}</div>
+         )
+     }
+   });
+
+   var Withlink=React.createClass({
+       mixins:[React.addons.LinkedStateMixin],
+       getInitialState:function () {
+         return {
+           message:"No input"
+         };
+       },
+       render:function () {
+         var message=this.state.message;
+         return (<div>
+           <input type="text" valueLink={this.linkState('message')}/>
+           {message}</div>
+         )
+     }
+   });
+
+
+
+   React.render(<Nolink/>,document.getElementById("content"));
+   React.render(<Nolink/>,document.getElementById("content1"));
+</script>
+
+</body>
+</html>
