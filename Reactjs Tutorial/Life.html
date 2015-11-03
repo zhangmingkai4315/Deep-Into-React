@@ -33,9 +33,18 @@
        componentWillReceiveProps:function (nextProps) {
          debugger;   //return when component receive new props
        },
+
        shouldComponentUpdate:function () {
          //  return boolean  if true -> update else ->do nothing!
        },
+
+       componentWillUnmount:function () {
+        //  anything registed before ,if not clean it, will cause memory leak!
+       }
+
+
+
+
        render:function () {
          var message=this.state.message;
          return (<h1>{message}</h1>)
