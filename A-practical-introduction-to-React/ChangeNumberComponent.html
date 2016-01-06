@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <title>React</title>
+</head>
+<body>
+<div id="content"></div>
+
+<div id="content1"></div>
+<script type="text/babel">
+var ChangeNumberComponent=React.createClass({
+    propTypes:{
+        value:React.PropTypes.number,
+        onChange:React.PropTypes.func
+    },
+    changeFromField:function(evt){
+        var newValue=parseInt(evt.target.value,10);
+        if(isNaN(newValue)){
+            newValue=""
+        }
+        this.props.onChange(newValue);
+    },
+    doArrowKeys:function(evt){
+        if(evt.key==='ArrayUp'||evt.key==='ArrayDown'){
+            evt.preventDefault();
+            if(evt.key==='ArrayUp'){
+                this.increment()
+            }else{
+                this.decrement();
+            }
+        }
+    },
+    decrement:function(){
+        // debugger
+        this.props.onChange(this.props.value<=0?0:this.props.value-1);
+    },
+     increment:function(){
+        this.props.onChange(this.props.value+1);
+    },
+    render:function(){
+        return (
+            <div>
+                <input type="text" 
+                    value={this.props.value} 
+                    onChange={this.changeFromField} 
+                    onKeyDown={this.doArrowKeys} />
+                <button onClick={this.increment}>Increment me</button>
+                <button onClick={this.decrement}>Decrement me</button>
+            </div>
+        )
+    }
+});
+
+var MainComponent=React.createClass({
+    getInitialState:function(){
+        return {
+            value:0
+        }
+    },
+    showNumber:function(newValue){
+        console.log(newValue);
+        this.setState({
+            value:newValue
+        });
+    },
+    render:function(){
+        return (
+            <div>
+                <ChangeNumberComponent value={this.state.value} onChange={this.showNumber}/>
+            </div>
+        );
+    }
+});
+
+ReactDOM.render(<MainComponent/>,document.getElementById('content'));
+</script>
+
+</body>
+</html>
